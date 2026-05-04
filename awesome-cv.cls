@@ -71,6 +71,8 @@
 \RequirePackage{setspace}
 % Needed to manage fonts
 \RequirePackage[quiet]{fontspec}
+% Better typography
+\RequirePackage{microtype}
 % To support LaTeX quoting style
 \defaultfontfeatures{Ligatures=TeX}
 % Needed to manage math fonts
@@ -78,40 +80,35 @@
 % Needed to use icons from font-awesome
 \RequirePackage{fontawesome6}
 \RequirePackage{accsupp}
-\defaultfontfeatures{
-  Renderer=HarfBuzz,
-}
+
 \setmainfont{Source Sans 3}[
-  UprightFont=*,
-  ItalicFont=* Italic,
-  BoldFont=* Bold,
-  BoldItalicFont=* Bold Italic,
-  FontFace={l}{n}{Font=* Light},
-  FontFace={l}{it}{Font=* Light Italic},
+  Numbers={OldStyle},
+  FontFace={l}{n}{Font=*},
+  FontFace={l}{it}{Font=* Italic},
 ]
 \setsansfont{Source Sans 3}[
-  UprightFont=*,
-  ItalicFont=* Italic,
-  BoldFont=* Bold,
-  BoldItalicFont=* Bold Italic,
-  FontFace={l}{n}{Font=* Light},
-  FontFace={l}{it}{Font=* Light Italic},
+  Numbers={OldStyle},
+  FontFace={l}{n}{Font=*},
+  FontFace={l}{it}{Font=* Italic},
 ]
+\setmonofont{Fira Mono}[
+  Scale={MatchLowercase},
+]
+\setmathfont{Fira Math}
 \newfontfamily\roboto{Roboto}[
-  UprightFont=*,
-  ItalicFont=* Italic,
-  BoldFont=* Bold,
-  BoldItalicFont=* Bold Italic,
-  FontFace={l}{n}{Font=* Light},
-  FontFace={l}{it}{Font=* Light Italic},
+  Numbers={OldStyle},
+  FontFace={l}{n}{Font=*},
+  FontFace={l}{it}{Font=* Italic},
 ]
 % Needed for the photo ID
 \RequirePackage[skins]{tcolorbox}
 % Needed to deal a paragraphs
 \RequirePackage{parskip}
 % Needed to deal hyperlink
-\RequirePackage[hidelinks,unicode,pdfpagelabels=false]{hyperref}
+\RequirePackage[unicode,pdfpagelabels=false]{hyperref}
 \hypersetup{%
+  colorlinks=true, % makes it possible to change
+  allcolors=.,     % colours later
   pdftitle={},
   pdfauthor={},
   pdfsubject={},
@@ -119,13 +116,26 @@
 }
 % Solves issues Warning: File `cv.out' has changed
 \RequirePackage{bookmark}
-
-%-------------------------------------------------------------------------------
-%                Configuration for directory locations
-%-------------------------------------------------------------------------------
-% Configure an optional directory location for fonts(default: 'fonts/')
-% Not required anymore but left in place for backward compatability.
-\newcommand*{\fontdir}[1][fonts/]{\def\@fontdir{#1}}
+% Language settings
+\RequirePackage{polyglossia}
+  \setmainlanguage[variant=british]{english}
+  \setotherlanguages{ngerman}
+% Print dates (it's necessary to load lang modules!)
+\RequirePackage[en-GB,de-DE]{datetime2}
+  \DTMlangsetup[en-GB]{ord=raise}
+% References
+\RequirePackage[
+  backend=biber,
+  style=numeric,
+  sorting=none,
+  %bibstyle=authortitle,
+  autolang=langname,
+  uniquename=init,
+  giveninits=true,
+  maxnames=2,
+  alldates=terse,  % sets the option for all dates to the same value
+  %block=ragged,
+]{biblatex}
 
 %-------------------------------------------------------------------------------
 %                Configuration for layout
@@ -198,7 +208,7 @@
 \newcommand*{\headerfirstnamestyle}[1]{{\fontsize{32pt}{1em}\headerfontlight\color{graytext} #1}}
 \newcommand*{\headerlastnamestyle}[1]{{\fontsize{32pt}{1em}\headerfont\bfseries\color{text} #1}}
 \newcommand*{\headerpositionstyle}[1]{{\fontsize{7.6pt}{1em}\bodyfont\scshape\color{awesome} #1}}
-\newcommand*{\headeraddressstyle}[1]{{\fontsize{8pt}{1em}\headerfont\itshape\color{lighttext} #1}}
+\newcommand*{\headeraddressstyle}[1]{{\fontsize{8pt}{1em}\headerfont\itshape\color{graytext} #1}}
 \newcommand*{\headersocialstyle}[1]{{\fontsize{6.8pt}{1em}\headerfont\color{text} #1}}
 \newcommand*{\headerquotestyle}[1]{{\fontsize{9pt}{1em}\bodyfont\itshape\color{darktext} #1}}
 \newcommand*{\footerstyle}[1]{{\fontsize{8pt}{1em}\footerfont\scshape\color{lighttext} #1}}
@@ -212,6 +222,8 @@
       {\color{text}\sectionstyleface{\@acvSectionTmp}}}
 \newcommand*{\subsectionstyle}[1]{{\fontsize{12pt}{1em}\bodyfont\scshape\textcolor{text}{#1}}}
 \newcommand*{\paragraphstyle}{\fontsize{9pt}{1em}\bodyfontlight\upshape\color{text}}
+% publications
+\renewcommand*{\bibfont}{\fontsize{9pt}{1em}\bodyfontlight\upshape\color{text}}
 
 % For elements of entry
 \newcommand*{\entrytitlestyle}[1]{{\fontsize{10pt}{1em}\bodyfont\bfseries\color{darktext} #1}}
@@ -569,7 +581,7 @@
         {}%
         {%
           \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
-          \href{\@homepage}{\faAlt{homepage: \@homepage}{\faHouseChimney}{\@homepage}}%
+          \href{https://\@homepage}{\faAlt{homepage: \@homepage}{\faHouseChimney}{\@homepage}}%
         }%
       \ifthenelse{\isundefined{\@github}}%
         {}%
