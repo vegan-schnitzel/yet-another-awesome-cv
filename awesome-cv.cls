@@ -21,8 +21,8 @@
 %-------------------------------------------------------------------------------
 %                Identification
 %-------------------------------------------------------------------------------
-\ProvidesClass{awesome-cv}[2017/02/05 v1.6.1 Awesome Curriculum Vitae Class]
 \NeedsTeXFormat{LaTeX2e}
+\ProvidesClass{awesome-cv}[2017/02/05 v1.6.1 Awesome Curriculum Vitae Class]
 
 
 %-------------------------------------------------------------------------------
@@ -59,8 +59,6 @@
 \RequirePackage{fancyhdr}
 % Needed to manage colors
 \RequirePackage{xcolor}
-% Needed to use \ifxetex-\else-\fi statement
-\RequirePackage{ifxetex}
 % Needed to use \if-\then-\else statement
 \RequirePackage{xifthen}
 % Needed to strip chars from telephone number
@@ -74,7 +72,7 @@
 % Better typography
 \RequirePackage{microtype}
 % To support LaTeX quoting style
-\defaultfontfeatures{Ligatures=TeX}
+\defaultfontfeatures{Ligatures=TeX, Renderer=HarfBuzz}
 % Needed to manage math fonts
 \RequirePackage{unicode-math}
 % Needed to use icons from font-awesome
@@ -91,16 +89,21 @@
   FontFace={l}{n}{Font=*},
   FontFace={l}{it}{Font=* Italic},
 ]
-\setmonofont{Fira Mono}[
+\setmonofont{Source Code Pro}[
   Scale={MatchLowercase},
-]
-\setmathfont{Fira Math}
-\newfontfamily\roboto{Roboto}[
-  Numbers={OldStyle},
   FontFace={l}{n}{Font=*},
   FontFace={l}{it}{Font=* Italic},
 ]
+%\setmathfont{Fira Math}
+\newfontfamily\roboto{Roboto}[
+  Numbers={OldStyle},
+  Scale={MatchLowercase},
+  FontFace={l}{n}{Font=*},
+  FontFace={l}{it}{Font=* Italic},
+]
+
 % Needed for the photo ID
+\RequirePackage{tikz}
 \RequirePackage[skins]{tcolorbox}
 % Needed to deal a paragraphs
 \RequirePackage{parskip}
@@ -120,6 +123,8 @@
 \RequirePackage{polyglossia}
   \setmainlanguage[variant=british]{english}
   \setotherlanguages{ngerman}
+% nice quotation marks
+\RequirePackage{csquotes}
 % Print dates (it's necessary to load lang modules!)
 \RequirePackage[en-GB,de-DE]{datetime2}
   \DTMlangsetup[en-GB]{ord=raise}
@@ -127,14 +132,13 @@
 \RequirePackage[
   backend=biber,
   style=numeric,
-  sorting=none,
-  %bibstyle=authortitle,
+  sorting=none,  % if uncommented, entries appear as in bibliography file
   autolang=langname,
-  uniquename=init,
   giveninits=true,
-  maxnames=2,
+  uniquename=init,
+  maxnames=3,
   alldates=terse,  % sets the option for all dates to the same value
-  %block=ragged,
+  %block=ragged,  % ragged-right
 ]{biblatex}
 
 %-------------------------------------------------------------------------------
@@ -175,7 +179,7 @@
 \colorlet{text}{darkgray}
 \colorlet{graytext}{gray}
 \colorlet{lighttext}{lightgray}
-\colorlet{sectiondivider}{gray}
+\colorlet{sectiondivider}{lightgray}
 % Awesome colors
 \definecolor{awesome-emerald}{HTML}{00A388}
 \definecolor{awesome-skyblue}{HTML}{0395DE}
@@ -222,32 +226,34 @@
       {\color{text}\sectionstyleface{\@acvSectionTmp}}}
 \newcommand*{\subsectionstyle}[1]{{\fontsize{12pt}{1em}\bodyfont\scshape\textcolor{text}{#1}}}
 \newcommand*{\paragraphstyle}{\fontsize{9pt}{1em}\bodyfontlight\upshape\color{text}}
+% small caps
+\newcommand{\propersmallcaps}{\addfontfeatures{SmallCapsFeatures={Letters=UppercaseSmallCaps}}}
 % publications
 \renewcommand*{\bibfont}{\fontsize{9pt}{1em}\bodyfontlight\upshape\color{text}}
 
 % For elements of entry
 \newcommand*{\entrytitlestyle}[1]{{\fontsize{10pt}{1em}\bodyfont\bfseries\color{darktext} #1}}
 \newcommand*{\entrypositionstyle}[1]{{\fontsize{8pt}{1em}\bodyfont\scshape\color{graytext} #1}}
-\newcommand*{\entrydatestyle}[1]{{\fontsize{8pt}{1em}\bodyfontlight\slshape\color{graytext} #1}}
-\newcommand*{\entrylocationstyle}[1]{{\fontsize{9pt}{1em}\bodyfontlight\slshape\color{awesome} #1}}
-\newcommand*{\descriptionstyle}[1]{{\fontsize{9pt}{1em}\bodyfontlight\upshape\color{text} #1}}
+\newcommand*{\entrydatestyle}[1]{{\fontsize{8pt}{1em}\bodyfontlight\itshape\color{graytext} #1}}
+\newcommand*{\entrylocationstyle}[1]{{\fontsize{9pt}{1em}\bodyfontlight\itshape\color{awesome} #1}}
+\newcommand*{\descriptionstyle}[1]{{\fontsize{9pt}{1em}\bodyfontlight\upshape\propersmallcaps\color{text} #1}}
 
 % For elements of subentry
 \newcommand*{\subentrytitlestyle}[1]{{\fontsize{8pt}{1em}\bodyfont\mdseries\color{graytext} #1}}
 \newcommand*{\subentrypositionstyle}[1]{{\fontsize{7pt}{1em}\bodyfont\scshape\color{graytext} #1}}
-\newcommand*{\subentrydatestyle}[1]{{\fontsize{7pt}{1em}\bodyfontlight\slshape\color{graytext} #1}}
-\newcommand*{\subentrylocationstyle}[1]{{\fontsize{7pt}{1em}\bodyfontlight\slshape\color{awesome} #1}}
+\newcommand*{\subentrydatestyle}[1]{{\fontsize{7pt}{1em}\bodyfontlight\itshape\color{graytext} #1}}
+\newcommand*{\subentrylocationstyle}[1]{{\fontsize{7pt}{1em}\bodyfontlight\itshape\color{awesome} #1}}
 \newcommand*{\subdescriptionstyle}[1]{{\fontsize{8pt}{1em}\bodyfontlight\upshape\color{text} #1}}
 
 % For elements of honor
 \newcommand*{\honortitlestyle}[1]{{\fontsize{9pt}{1em}\bodyfont\color{graytext} #1}}
 \newcommand*{\honorpositionstyle}[1]{{\fontsize{9pt}{1em}\bodyfont\bfseries\color{darktext} #1}}
 \newcommand*{\honordatestyle}[1]{{\fontsize{9pt}{1em}\bodyfont\color{graytext} #1}}
-\newcommand*{\honorlocationstyle}[1]{{\fontsize{9pt}{1em}\bodyfontlight\slshape\color{awesome} #1}}
+\newcommand*{\honorlocationstyle}[1]{{\fontsize{9pt}{1em}\bodyfontlight\itshape\color{awesome} #1}}
 
 % For elements of skill
 \newcommand*{\skilltypestyle}[1]{{\fontsize{10pt}{1em}\bodyfont\bfseries\color{darktext} #1}}
-\newcommand*{\skillsetstyle}[1]{{\fontsize{9pt}{1em}\bodyfontlight\color{text} #1}}
+\newcommand*{\skillsetstyle}[1]{{\fontsize{9pt}{1em}\bodyfontlight\propersmallcaps\color{text} #1}}
 
 % For elements of the cover letter
 \newcommand*{\lettersectionstyleface}[1]{{\fontsize{14pt}{1em}\bodyfont\bfseries #1}}
@@ -255,16 +261,16 @@
   \def\@acvLetterSectionTmp{#1}
   \ifthenelse{\boolean{acvSectionColorHighlight}}{%
     \StrSplit{\@acvLetterSectionTmp}{3}{\acvLetterSectionStringAwesome}{\acvLetterSectionStringPlain}%
-      \color{awesome}\sectionstyleface{\acvLetterSectionStringAwesome%
+      \color{awesome}\lettersectionstyleface{\acvLetterSectionStringAwesome%
       \color{text}{\acvLetterSectionStringPlain}}}%
       {\color{text}\lettersectionstyleface{\@acvLetterSectionTmp}}}
 \newcommand*{\recipientaddressstyle}[1]{{\fontsize{9pt}{1em}\bodyfont\scshape\color{graytext} #1}}
 \newcommand*{\recipienttitlestyle}[1]{{\fontsize{11pt}{1em}\bodyfont\bfseries\color{darktext} #1}}
 \newcommand*{\lettertitlestyle}[1]{{\fontsize{10pt}{1em}\bodyfontlight\bfseries\color{darktext} \underline{#1}}}
-\newcommand*{\letterdatestyle}[1]{{\fontsize{9pt}{1em}\bodyfontlight\slshape\color{graytext} #1}}
-\newcommand*{\lettertextstyle}{\fontsize{10pt}{1.4em}\bodyfontlight\upshape\color{graytext}}
+\newcommand*{\letterdatestyle}[1]{{\fontsize{9pt}{1em}\bodyfontlight\itshape\color{graytext} #1}}
+\newcommand*{\lettertextstyle}{\fontsize{10pt}{1.4em}\bodyfontlight\upshape\propersmallcaps\color{text}}
 \newcommand*{\letternamestyle}[1]{{\fontsize{10pt}{1em}\bodyfont\bfseries\color{darktext} #1}}
-\newcommand*{\letterenclosurestyle}[1]{{\fontsize{10pt}{1em}\bodyfontlight\slshape\color{lighttext} #1}}
+\newcommand*{\letterenclosurestyle}[1]{{\fontsize{10pt}{1em}\bodyfontlight\itshape\color{lighttext} #1}}
 
 
 %-------------------------------------------------------------------------------
